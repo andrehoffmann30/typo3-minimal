@@ -1,0 +1,28 @@
+version: '3.6'
+
+services:
+  mariadb:
+    image:  mariadb:10.2
+    container_name:  mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: typo3db
+      MYSQL_USER: typo3
+      MYSQL_PASSWORD: typo3
+    volumes:
+      - ${PWD}/db_data:/var/lib/mysql
+    ports:
+     - 3306:3306
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+     - PMA_ARBITRARY=1
+    restart: always
+    ports:
+     - 8080:80
+    volumes:
+     - /sessions
+    links:
+     - mariadb:mysql
